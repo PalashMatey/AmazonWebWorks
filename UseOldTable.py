@@ -23,28 +23,59 @@ def enterValues():
 
 
 def start():
-        flag = True
-        while flag:
+        while True:
                 print 'Please Select the operation'
                 print 'Select 1. Enter Item'
                 print 'Select 2. Delete Item'
                 print 'Select 3. Get Item'
                 print 'Select 4. Update Item'
                 print 'Select 5. Exit'
-                num = int(raw_input("Select a number between 1-5 :"))
+                num = int(raw_input("Select a number between 1-5: "))
 
                 if num == 1:
                         enterValues()
                 elif num == 2:
                         print 'Select Item to Delete'
                 elif num == 3:
-                        print 'Get an item'
+                        getItem()
                 elif num == 4:
-                        print 'Update an Item'
+                        UpdateItem()
                 else :
-			print 'Exiting the program' 
-                        flag = False
+			print 'Exiting the program...' 
+			exit()
 
+
+
+def getItem():
+	print 'Enter Username/Lastname to search for particular entry'
+	getusername = raw_input("Enter the username to get: ")
+	getlast_name = raw_input("Enter the lastname to get: ")
+	response = table.get_item(
+   	 Key={
+        	'username': getusername,
+		'last_name': getlast_name
+    		}
+	)
+	item = response['Item']
+	print(item)
+	start()
+
+def UpdateItem():
+	print 'I am here and running'
+	getusername = raw_input("Enter the username to get: ")
+        getlast_name = raw_input("Enter the lastname to get: ")
+	getage = int(raw_input("Enter the age that you want to update"))
+	table.update_item(
+    	Key={
+        	'username': getusername,
+        	'last_name': getlast_name
+    	},
+    	UpdateExpression='SET age = :val1',
+    	ExpressionAttributeValues={
+        ':val1': getage
+    		}
+	)
+	getItem()
 
 
 start()
